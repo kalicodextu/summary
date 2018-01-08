@@ -1033,4 +1033,10 @@
     *not isinstance(a, b)*
 
 
+## unittest.mock mock object library
 
+在测试过程中可以使用`mock`库来用模拟的对象替换掉被测试的部分,这些部分可能很难获取或者很难被构造出来.
+
+* Mock Class
+
+  
