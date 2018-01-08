@@ -8,22 +8,27 @@
 
 ### Basic Content	
 * __Two Basic Modes__
-		* Normal mode
+		
+    * Normal mode
 
 		*In Normal mode the charactors that you type are commands.*
-		* Insert mode
+		
+    * Insert mode
 
 		*In Insert mode the  charactors are inserted as text.*
 
 * __Basic Operator__
 	* Inserting Text
-		* i
+		
+    * i
 
 		*switch to Insert mode, befor the cursor.*
-		* a
+		
+    * a
 
 		*switch to Insert mode, after the cursor.*
-		* <ESC\>
+		
+    * <ESC\>
 
 		*switch to Numal mode*
 	
@@ -37,7 +42,8 @@
 		* x
 
 		*delete a charactor.*
-		* dd
+		
+    * dd
 
 		*delete a whole line.*
 		
@@ -45,7 +51,8 @@
 		* u
 
 		*undoes the last edit*
-		* CTRL-R
+		
+    * CTRL-R
 
 		*to reverse the preceding command*
 		
@@ -53,13 +60,16 @@
 		* i
 
 		*insert*
-		* a
+		
+    * a
 
 		*append*
-		* o
+		
+    * o
 
 		*create a new, empty line below the cursor and put vim in Insert mode.*
-		* O
+		
+    * O
 
 		*open a line above the cursor.*
 	
@@ -67,10 +77,12 @@
 		* ZZ
 
 		*write the files and exit.*
-		* q!
+		
+    * q!
 
 		*quit-and-throw-things-away.*
-		* e!
+		
+    * e!
 
 		*reload the original version of the file.* 
 		
@@ -80,16 +92,20 @@
 		* (N)w 
 
 		*move the cusor forward the start of N's word.*
-		* (N)b
+		
+    * (N)b
 
 		*move backword to the start of the previous Ｎ'S word.*
-		* (N)e
+		
+    * (N)e
 
 		*move to the next end of N's word*
-		* (N)ge
+		
+    * (N)ge
 
 		*move to the previous end of N's word*
-		**Note:**
+		
+    **Note:**
 		> A word ends at a non-word character, such as a ".", "_" or  ")", use:
 		W, B, E, gE
 		
@@ -97,13 +113,16 @@
 		* $
 
 		*move the cursor to the end of line.*
-		* g_
+		
+    * g_
 
 		*move the cursor to the last non-blank charactor of line.*
-		* 0
+		
+    * 0
 
 		*move the cursor to the vey first charactor of the line.*
-		* ^
+		
+    * ^
 
 		*move the cursor to the first non-blank charactor of the line.*
 		
@@ -111,13 +130,16 @@
 		* (N)f(charactor)
 
 		*search forward  in the line for the N's single charactor, and the cursor move to the charactor.*
-		* (N)F(charactor)
+		
+    * (N)F(charactor)
 
 		*search to the left.*
-		* (N)t(charactor)
+		
+    * (N)t(charactor)
 
 		*search forward  in the line for the N's single charactor, and the cursor move to a charactor before the charactor.*
-		* (N)T(charactor)
+		
+    * (N)T(charactor)
 
 		*search to the left.*
 		
@@ -129,13 +151,16 @@
 		* :N or NG
 
 		*move to the start of N's line.*
-		* gg
+		
+    * gg
 
 		*move to the start of first line.*
-		* G
+		
+    * G
 
 		*move to the start of last line.*
-		* N%
+		
+    * N%
 
 		*move  to the line N%. 
 		eg: 50% move to halfway line of the file*
@@ -191,6 +216,120 @@
 * 
 
 ## 3. Gevent
+* 总述
+
+	*gevent 是一个基于[libev](http://software.schmorp.de/pkg/libev.html)的并发库*
+
+* 核心概念
+
+	* Greenlets
+
+  	*作为C扩展包为python提供协程支持.*
+	
+	* Syschronous& Asyschronous
+	
+  	*并发的核心思想是将一个更大的任务分成一组子任务后被调度同时或者异步执行，而不是一次或者同步执行。*
+	
+  * 确定性
+	
+  *gevent是确定性的，给定greenlet和相同的一组输入相同的配置，他们总是产生相同的输出。*
+	
+  * Spawning Greenlets
+	    
+      *Gevent 提供了greenlet初始化的一些封装*
+	* gevent.spawn()
+	* 继承 gevent.Greenlet 类，重载`_run`方法，创建自定义Greenlet类，
+	* Greenlet State
+	  
+ 	*Greenlet也会产生各种各样的错误，抛出异常时有可能会失败。Greenlet内部状态通常是与时间相关的参数。	Greenlet提供了一些标志，可以通过这些标志来监控线程的状态.*
+    	
+		* Boolean -- started() 
+    	
+      *whether the greenlet has been started.*
+		
+		* Boolean -- ready()
+		  
+      *whether the greenlet has been halted.*
+		
+		* Boolean -- successful()
+    	
+      *whether the Greenlet has halted and not thrown an exception.*
+		
+		* Boolean -- value
+		  
+      *arbitrary, the value returned by the Greenlet*
+
+		* Boolean -- exception
+		  
+      *exception, uncaught exception instance thrown inside the greenlet
+	
+  * Program Shutdown
+    
+    *当主程序接收到`SIGQUIT`信号时,Greenlets可能会超出预料时间hold程序执行,这就导致了僵尸进程。我们可以在主程序监听SIGQUIT事件，并在退出前调用gevent.shutdown.*
+	
+  * Timeouts
+    
+    *Timeouts是对代码块或Greenlet运行时的约束。*
+    * 使用Timeout对象的实例设定timeout，用start()方法设定Timeout
+    * 直接使用Timeout，接受timeout时间和timeout异常处理函数。
+
+  * Monkeypatching
+    * 'patch_all'
+      * 'patch_socket'
+      * 'patch_ssl'
+      * 'patch_os'
+      * 'patch_time'
+      * 'patch_select'
+      * 'patch_thread'
+      * 'patch_subprocess'
+      * 'patch_sys'
+
+* 数据结构
+  * Event
+    * Event是Greenlet之间异步通信的一种形式。
+      * 可以使用gevent.event.Event的wait()和set(),进行block通信 
+      * AsyncResult是Gevent的扩展，可以允许随着唤醒呼叫发送一个值，也可以叫预设或延迟。
+        * set()
+        * get()
+  * Queues
+    * Queues是一个有序数据集，可以执行`put`和`get`操作，以便在Greenlet中安全的被操作。
+      
+      *如果一个Greenlet从一个Queue中抓取一个item，则这个item不会同时被另一个greenlet抓取执行。*
+    * Queues也可以在put或get加block
+    * 可以在Queue传入maxsize参数，设置queue的zise。
+
+  * Group and Pools
+    * Group
+      
+      *Group是一个被group管理和调度的运行时greenlets的集合，它也可以作为并行处理程序来镜像python的multiprocessing库*
+
+      * Group提供了API去分配到分组的greenlet并且可以收集它们的结果。
+        * getcurrent()
+        * imap()
+        * imap_unordered()
+  
+    * Pool
+      
+      *Pool是一个可以限制greenlet动态数量的结构，经常在网络和I/O绑定任务的时候使用。* 
+
+  * Locks and Semaphores
+    
+    *信号量是一个低级同步原语，它允许greenlet协调和限制并发访问或执行。*
+      
+      * acquire()
+      * release()
+      * 可以在BoundSemaphore中传入信号量的size。
+  
+  * Thread Locals
+    
+    *Gevent还允许您指定greenlet上下文的本地数据。在内部，这是作为一个全局查找来实现的，该全局查找解决了由greenlet的getcurrent（）值键入的私有名称空间。*
+    
+    * gevent.local.local()
+      
+      *许多web框架使用gevent在gevent存储HTTP会话对象到gevent线程local。* 
+
+  * Subprocess
+    * 提供了子进程合适的等待 
 
 ## 4. gevent.pywsgi
 
@@ -393,7 +532,7 @@
   			"type": "string",
  			 "enum": ["red", "amber", "green"]
 		}
-	```
+	  ```
 
 * Combining schemas
 
@@ -491,4 +630,276 @@
 		*这个部分需要base64加密后的header和base64加密后的payload使用.连接组成的字符串，然后通过header中声明的加密方式进行加盐secret组合加密，然后就构成了jwt的第三部分。*
 
 
-## pymongo
+## mongoDB
+* Introduction
+
+  *MongoDB 是一个开源的高性能,高可用性,可扩展的 `document`文档库.*
+
+  * Documents
+    
+    *MongoDB 的一条记录,它是由字段和值组成的数据结构,它和JSON对象很类似,字段的值可以包含其它的 `document`, `arrays`, `document`数组* 
+
+  * Collections
+
+    *MongoDB将`Documents`储存在`Collections`中,必须有一个唯一的`_id`字段作为主键.*
+
+* Import data
+
+  * mongoimport
+    * --db
+
+      *指定要导入到的数据库名称*
+
+    * --collection
+
+      *指定要导入的collection名称*
+
+    * --drop  
+
+      *如果数据库中的`collection`已经存在,则删掉.*
+
+    * --file
+
+      *后接要导入的文件的路径*
+
+* Insert
+
+  * db.collection.insert()
+
+    *插入一个或多个`document`, 插入一个时返回`WriteResult`对象,插入多个时返回`BulkWriteResult`,最好使用下面两种方法.*
+
+  * db.collection.insertOne()
+    
+    *插入一个`document`,返回一个`document`,包含`acknowledged`和`insertedId`.*
+
+  * db.collection.insertMany()
+
+    *插入多个`document`,返回一个`document`,包含`acknowledged`和`insertedIds`,`insertedIds`是insertedId的数组*
+
+
+* Find and Query
+
+  * switch database
+
+    ``` shell
+       use {db_name}
+    ```
+
+  * 查询所有的`document`
+    
+   
+   ``` shell
+        db.collection.find()
+    ```
+
+  * 指定查询条件
+    
+    ``` shell
+      { <field1>: <value1>, <field2>: <value2>, ... }
+    ```
+
+  * 嵌入型,数组和顶级`document`的查询
+
+    * 顶级查询可以直接使用字段和值
+  
+    * 嵌入型和数组可以使用`.`符号表示查询的字段
+
+  * 指定条件下操作
+  
+    ``` shell
+        { <field1>: { <operator1>: <value1> } }
+    ```
+    * comparison
+      * `$eq`  =
+      * `$gt`  >
+      * `$gte` >=
+      * `$lt`  <
+      * `$lte` <=
+      * `$ne`  ≠
+      * `$in   
+      * `$nin` 
+
+   * Logical
+     * `$and`
+     * `$not`
+     * `nor`
+     * `or`
+
+   * Element
+     * `$exits`
+     * `type`
+
+  * 查询结果排序
+  
+    * db.collection.find(...).sort({field1:1(-1), ...})
+      
+      *当值为1时升序排列,当值为-1时降序排列*
+
+      
+* Update
+  
+  * update
+
+    *使用更新相关的操作更新指定的Document内容,默认更新一个匹配的`document`,如果想更新多个匹配的内容,可以使用`multi`选项设置*
+
+    ``` shell
+      db.restaurants.update(
+      { "address.zipcode": "10016", cuisine: "Other" },
+      {
+        $set: { cuisine: "Category To Be Determined" },
+        $currentDate: { "lastModified": true }
+      },
+      { multi: true}
+    )
+    ```
+      
+  * replace
+    
+    * 如果update参数中没有更新相关的操作符号,就默认为替换操作,只有`_id`不变
+
+    *最好使用`updateOne`,`updateMany`和`replaceOne`等代替,避免歧义或误用
+
+  
+* Remove
+  
+  ``` shell
+      db.collection.remove({field1:value1,...})
+  ```
+
+
+  * remove操作会删除掉所有匹配到的`document`
+
+  * justOne
+
+    *使用此选项设置只删掉一个匹配的`document`*
+  
+  * 如果remove的参数为一个空的`document`,则会匹配collection中所有的`document`,这会删掉collection中所有的`document`
+
+  * Drop collection
+    ``` shell
+        db.collection.drop()
+    ```
+
+* 数据聚合
+  
+  * 使用collection方法: aggregate()
+  
+  ``` shell
+      db.collection.aggregate({<stage1>,<stage2>,...})
+  ```
+  
+  * $group
+    
+    *`$group`需要指定一个字段作为`_id`,后面的`stage`可以使用`accumulators`,或其他`stage`*
+  
+  * Filter
+  
+    *在使用`$group`时可以使用`$match`来对匹配的指定查询进行聚合*
+
+  
+* 索引
+  * 创建 Single-Field 索引
+
+    ``` shell
+      db.collection.createIndex({field:1})
+    ```
+
+    *Field的值为1时升序,为-1降序*
+
+  * 创建 compound 索引
+
+    ``` shell
+      db.collection.createIndex({ <field1>: <type1>, <field2>:<type2>, ...})
+    ```
+
+    *可以对不同字段创建不同的顺序,主要是根据业务需求,另外字段如果是嵌入型的可以使用`.`符号*
+
+
+## pymongo -- mongodb diver for python
+
+* 使用之前需要开启`mongod`的服务
+
+* MongoClient
+
+  *使用`MongoClient`去运行一个`mongod`的一个实例,下面三种默认主机和端口下是等效的,但是后面两种方法可以自定义主机和端口*
+
+  * client = MongoClient()
+
+  * client = MongoClient('localhost', 27017)
+
+  * client = MongoClient('mongodb://localhost:27017/')
+
+* 链接数据库
+
+  *可以使用下面两种风格, 第一种支持默认`word`格式,第二种弱`word`格式*
+
+  * collection = db.test_collection
+
+  * collection = db['test-collection']
+
+* Document
+
+  *在`mongodb`中使用了`JSON-style`的`documents`,在`pymongo`中,使用字典类型表示`document`*
+
+* 插入一个Document
+
+  * 使用 `insert_one()` 方法
+
+    *返回变亮有一个`inserted_id`属性代表插入的`document`的`ObjectId`.*
+
+* 查询一个Document
+
+  * 使用 `find_one()` 方法
+  
+* 通过`ObjectId`查询 
+
+  *不能直接使用ObjectId的字符串进行查询,需要借用`bson`库提供的`ObjectId`进行转换*
+
+* 批量插入(Bulk Inserts)
+  
+  *使用 `insert_many()` 方法
+
+    *返回一个插入documents的`ObjectId`的数组*
+
+* 查询多个Document
+
+  * 使用 `find({filed1:value1,...})` 方法可以返回一个游标的实例,通过这个实例可以迭代出所有匹配的`document`
+  
+  * find()的参数为空时,将匹配`collection`中所有的`document`.
+  
+* 计数
+
+  *`collection`或一个查询,都包含一个`count()`方法,可以去查询`document`的数量.*
+
+* 查询结果排序
+
+  * `query` 包含一个 `sort()` 方法
+    * 通过一个字段排序
+    
+    ``` python
+        sort('field', pymongo.ASCENDING)
+    ```
+
+    * 通过多个字段排序
+    
+    ``` python
+      sort([
+          ('field1', pymongo.ASCENDING),
+          ('field2', pymongo.DESCENDING)
+          ])
+    ```
+
+* 索引
+
+  * 使用 `create_index()`方法
+
+    ``` python
+      db.collectioncreate_index([('user_id', pymongo.ASCENDING)],unique=True)
+    ```
+
+    *unique设置唯一索引,当新插入document包含已经存在的索引时,会报出`DuplicateKeyError`*
+
+
+## PEP8 python编码风格
+
+
