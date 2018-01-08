@@ -237,29 +237,32 @@
   * Spawning Greenlets
 	    
       *Gevent 提供了greenlet初始化的一些封装*
-	* gevent.spawn()
-	* 继承 gevent.Greenlet 类，重载`_run`方法，创建自定义Greenlet类，
-	* Greenlet State
+	
+  * gevent.spawn()
+	
+  * 继承 gevent.Greenlet 类，重载`_run`方法，创建自定义Greenlet类，
+	
+  * Greenlet State
 	  
- 	*Greenlet也会产生各种各样的错误，抛出异常时有可能会失败。Greenlet内部状态通常是与时间相关的参数。	Greenlet提供了一些标志，可以通过这些标志来监控线程的状态.*
+ 	  *Greenlet也会产生各种各样的错误，抛出异常时有可能会失败。Greenlet内部状态通常是与时间相关的参数。	Greenlet提供了一些标志，可以通过这些标志来监控线程的状态.*
     	
-		* Boolean -- started() 
+		* started() 
     	
       *whether the greenlet has been started.*
 		
-		* Boolean -- ready()
+		* ready()
 		  
       *whether the greenlet has been halted.*
 		
-		* Boolean -- successful()
+		* successful()
     	
       *whether the Greenlet has halted and not thrown an exception.*
 		
-		* Boolean -- value
+		* value
 		  
       *arbitrary, the value returned by the Greenlet*
 
-		* Boolean -- exception
+		* exception
 		  
       *exception, uncaught exception instance thrown inside the greenlet
 	
@@ -899,7 +902,135 @@
 
     *unique设置唯一索引,当新插入document包含已经存在的索引时,会报出`DuplicateKeyError`*
 
+## unittest
 
-## PEP8 python编码风格
+* 概要
+  
+  * test fixture
+  
+    *代表在测试之前的准备工作,包括所有关联的清理工作,比如创建临时或代理数据库,目录或开始一个服务器的进程.*
+  
+  * test case
+  
+    *测试用例最小的测试的单位,它对特定输入集合的特定相应进行检查* 
+  
+  * test suit
+  
+    *一组测试用例或测试suit的集合,用来聚合测试,然后一起进行测试.*
+  
+  * test runner
+  
+    *它是一个协调测试的执行,并把结果提供给user的组件.*
+  
+* Command-line
+  
+  *当脚本中,没有定义 `test runner` 时,可以使用 `Command-line`来运行测试用例*
+  
+  ``` shell
+    python -m unittest test_basic
+  ```
+
+* Test Discovery
+  
+  * 在`unittest`后面加上`discover`可以实现简单的test的搜索.
+    * -v
+
+      *详细信息*
+
+    * -s
+
+      *搜索开始的目录* 
+
+    * -p
+
+      *设置要匹配的测试*
+
+    * -t
+    
+      *项目的顶层目录*
+
+    
+* 测试程序结构
+
+  * 可以使用重写 `setUp` 方法,用于测试用例执行前的初始化工作
+
+  * 重写 `tearDown` 方法,用于测试用例执行完的善后工作,即使测试过程中抛出了异常,它仍然会执行.
+
+  * unittest.TestCase : 所有测试用例继承的基本类
+
+  * unittest.main() 
+    
+    *使用`Testloader`类搜索所有包含在该模块中的一`test`开头的测试,并执行*
+
+  * unittest.TestSuite
+    
+    *用来创建测试套件*
+
+  * unittest.TextTestRunner()
+
+    *`unittest` 框架的 `TextTestRunner` 类的run方法运行suite组装的测试用例*
+
+  * unittest.defaultTestLoader()
+
+    *通过该类下面的 `discover` 方法可以根据测试目录匹配查找测试文件*
+
+
+* 装饰器
+
+  * @unittest.skip(reason) 无条件跳过
+  * @unittest.skipIf(reason) 条件真跳过
+  * @unittest.skipUnless(reason) 条件假跳过
+  * @unittest.exceptedFailure 将一个测试标记为`fail`, 如果`fail`,则不会`failure`
+
+* 断言
+
+  * assertEqual(a, b, [msg])
+    
+    *a == b*
+
+  * assertNotEqual(a, b, [msg])
+  
+    *a != b*	 
+  
+  * assertTrue(x, [msg])	
+  
+    *bool(x) is True*
+  
+  * assertFalse(x, [msg])
+  
+    *bool(x) is False*	
+  
+  * assertIs(a, b, [msg])
+  
+    *a is b*
+  
+  * assertIsNot(a, b, [msg])
+  
+    *a is not b*
+  
+  * assertIsNone(x, [msg])
+  
+    *x is None*
+  
+  * assertIsNotNone(x, [msg])
+  
+    *x is not None*
+  
+  * assertIn(a, b, [msg])
+  
+    *a in b*
+  
+  * assertNotIn(a, b, [msg])
+  
+    *a not in b*
+  
+  * assertIsInstance(a, b, [msg])
+  
+    *isinstance(a, b), a is the instance of b*
+  
+  * assertNotIsInstance(a, b, [msg])
+  
+    *not isinstance(a, b)*
+
 
 
