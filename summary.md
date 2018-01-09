@@ -1037,11 +1037,11 @@
 
 在测试过程中可以使用`mock`库来用模拟的对象替换掉被测试的部分,这些部分可能很难获取或者很难被构造出来.
 
-* Mock Class
+- Mock Class
 
- ``` python
- class unittest.mock.Mock(spec=None, side_effect=None, return_value=DEFAULT, wraps=None, name=None, spec_set=None, unsafe=False, **kwargs) 
- ```
+  ``` python
+    class unittest.mock.Mock(spec=None, side_effect=None, return_value=DEFAULT, wraps=None, name=None, spec_set=None, unsafe=False, **kwargs) 
+  ```
 
   * parameter 
     * spec 
@@ -1168,9 +1168,5 @@
 
       *对象的属性*
 
-  
-  ``` python
-    class unittest.mock.NonCallableMock(spec=None, wraps=None, name=None, spec_set=None, **kwargs)
-  ```
-  
-  * 
+
+
