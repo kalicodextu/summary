@@ -1039,4 +1039,138 @@
 
 * Mock Class
 
+ ``` python
+ class unittest.mock.Mock(spec=None, side_effect=None, return_value=DEFAULT, wraps=None, name=None, spec_set=None, unsafe=False, **kwargs) 
+ ```
+
+  * parameter 
+    * spec 
+      
+      *mock对象的规范,它可以是一组字符串列表或者是一个已经存在的对象,如果传入一个对象,则通过调用`dir`来形成字符串列表,当访问不在列表中的属性时,就会抛出`AttributeError.`*
+
+    * spec_set
+
+      *作为spec参数的严格变体,如果设置或者获取的mock属性,不在传入的对象属性中,则抛出`AttributeError`*
+
+    * side_effect
+
+      * 当Mock被调用时,这个参数指定的函数也会被调用,被用来抛出异常或动态修改返回值.
+      * 它的参数与mock参数相同,并且除非它的返回值是`default`,否则使用这个函数的返回值作为返回值.
+        * 或者说`side_effect`可以是`exception`类或实例,这种情况下,调用mock将会抛出这个异常.
+      * 如果`side_effect`是一个可迭代的,每次调用都会返回这个可迭代对象的下一个值.
+      * 设置为`None`,可以清除`side_effect`
+
+    * return_value
+
+      *当调用mock时,这个值会被返回.一般情况下,这是一个新的Mock,即被创建或第一次被访问* 
+
+    * unsafe
+    
+      *默认情况下,任何以`assert`或`assret`开头的属性,都会抛出`AttributeError`异常* 
+
+    * wraps
+
+      * 用于mock对象的封装
+      * 如果`wraps`不是`None`,调用Mock会将这个调用传递向封装mock对象wraps对象.
+      * mock上的属性访问会返回一个包含`wraps`对象属性的Mock对象
+
+    * name
+
+      * 在mock一些准备工作中被使用
+      * 可以用于调试
+      * 这个名字可以传递给子mock
+
+    
+  * method
+
+    * assert_called(*args, **kwargs)
+    
+      *断言这个mock至少被调用了一次*
+
+    * assert_called_once(*arg, **kwargs) 
+
+      *断言这个mock被只调用了一次*
+
+    * assert_called_with(*args, **kwargs)
+
+      *这是一个方便的方法去断言mock是被一种指定的方式调用*
+
+    * assert_called_once_with(*args, **kwargs)
+
+      *断言这个mock被指定的方法调用了一次*
+
+    * assert_any_call(*args, **kwargs)  
+
+      *断言这个mock曾经被用指定方式调用过,与`assert_called_with`和`assert_called_once_with`不同的是只要mock只要曾经被调用过,它就pass,而后两个则需要最近一次被调用*
+
+    * assert_has_calls(calls, any_order=False)
+    
+      *断言这个mock被指定的呼叫调用,calls是一个 `mock_calls`列表*
+      
+      * any_order 默认为false
+        
+        *这个calls必须是有序的,可以在指定的calls之前或之后加额外的calls*
+
+      * any_order 为 true
+
+        *这个可以是无序的,但是必须使用`mock_calls`中的呼叫*
+
+    * assert_not_called()
+
+      *断言这个mock从来没有被调用过*
+
+    * reset_mock(*, return_value=False, side_effect=False)
+
+      *这个方法会重置这个mock的所有调用属性*
+
+    * mock_add_spec(spec, spec_set=False)
+
+      *向mock增加规范列表或对象,如果`spec_set`为True,只有spec的属性可以设置*
+
+    * configure_mock(**kwargs)
   
+      *通过关键字参数,设置mock属性*
+
+    * called
+
+      *判断mock是否被调用过,返回布尔值*
+
+    * call_count
+
+      *mock 被调用的此时*
+
+    * return_value
+
+      *设置这个mock返回值*
+
+    * side_effect
+      
+      * 配置 `side_effect`*
+
+    * call_args
+
+      * 如果没有被调用过,值为 None
+      * 否则值为最后一次被调用的参数
+
+    * call_args_list
+
+      *被调用参数列表*
+
+    * method_calls
+    
+      *调用的方法列表*
+
+    * mock_calls
+  
+      *记录调用的mock对象,方法, magic方法, return_value mocks*
+
+    * __class__
+
+      *对象的属性*
+
+  
+  ``` python
+    class unittest.mock.NonCallableMock(spec=None, wraps=None, name=None, spec_set=None, **kwargs)
+  ```
+  
+  * 
