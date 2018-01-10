@@ -1202,4 +1202,90 @@
       *autospec是一个更强大的规范形式。如果你设置autospec = True，那么mock将被替换的对象的规范创建。mock的所有属性也将具有被替换的对象的相应属性的规格。被模拟的方法和函数将检查它们的参数，如果调用了错误的签名，将引发TypeError。*
   
 
+  * patch.dict
   
+    *修补一个字典或者像对象的字典,并且在测试完之后恢复它.*
+
+    ``` python
+      patch.dict(in_dict, values=(), clear=False, **kwargs)
+    ```
+
+    * in_dict
+      * in_dict 可以是字典或者像容器一样的映射,如果是映射它至少要支持获取,设置,删除以及迭代键
+      * in_dict 也可以是字典的名称,可以通过导入来获取
+
+    * values
+      * 字典的值
+      * 键与值的迭代
+
+    * clear
+
+      *如果设为`true`,那么在在设置新的值之前,字典会被清除*
+
+  * patch.multiple
+
+    *执行多个修补程序*
+    
+    ``` python
+      patch.multiple(target, spec=None, create=False, spec_set=None, autospec=None, new_callable=None, **kwargs)
+    ```
+    
+  * patch methods: start and stop
+    
+    *所有的patcher都有start和stop方法*
+
+    * 使用patcher的start方法会返回创建的mock
+    * 经常在unittest的 `setUp` 中使用
+    * stopall 方法会停止所有使用start的patcher
+
+  * patch builtins
+    
+    *可以对内置模块进行补丁*
+
+  * TEST_PREFIX
+
+    * patch 匹配的字首
+
+  * Nesting Patch Decorators
+
+    *可以使用多个堆叠的修补修饰器,进行多次修补,注意参数顺序是由里向外*
+
+  * Where to patch
+  
+    *主要是从所需的地方引入*
+
+- MagicMock and magic method support
+
+  * Mocking Magic Methods
+  
+    *mock支持模拟python协议方法,称为`MagicMock`*
+
+  * Magic Mock
+
+    *可以无需自定义,使用MagicMock*
+
+    ``` python
+      class unittest.mock.MagicMock(*args, **kw)
+    ```
+
+    * python protocol 默认值
+
+      * __lt__: NotImplemented
+      * __gt__: NotImplemented
+      * __le__: NotImplemented
+      * __ge__: NotImplemented
+      * __int__: 1
+      * __contains__: False
+      * __len__: 0
+      * __iter__: iter([])
+      * __exit__: False
+      * __complex__: 1j
+      * __float__: 1.0
+      * __bool__: True
+      * __index__: 1
+      * __hash__: default hash for the mock
+      * __str__: default str for the mock
+      * __sizeof__: default sizeof for the mock
+      
+
+    
