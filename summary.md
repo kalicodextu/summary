@@ -1169,4 +1169,37 @@
       *对象的属性*
 
 
+- patcher
 
+  *`patch`用来对修饰范围之内的对象进行修补*
+
+   
+  * patch
+
+     *`patch`可以作为函数装饰器,类装饰器和一个上下文管理器*
+
+  ``` python
+    unittest.mock.patch(target, new=DEFAULT, spec=None, create=False, spec_set=None, autospec=None, new_callable=None, **kwargs)
+  ```
+
+  * target 
+    * `target`必须是`package.module.ClassName`形式的字符串
+    * 导入对象,并且被新的对象替换
+    * 这个对象在装饰器执行的时候会被导入,而不是在装饰的时候
+  
+  * spec spec_set
+
+    * spec = True spec_set=True
+
+      *`patch`会被作为`spec/spec_set`对象,传递给mock对象*
+
+  * new_callable
+
+    *指定新的不同的类或可调用对象*
+
+  * autospec
+  
+    *autospec是一个更强大的规范形式。如果你设置autospec = True，那么mock将被替换的对象的规范创建。mock的所有属性也将具有被替换的对象的相应属性的规格。被模拟的方法和函数将检查它们的参数，如果调用了错误的签名，将引发TypeError。*
+
+
+  
