@@ -91,19 +91,19 @@
 	* Word Movement
 		* (N)w 
 
-		*move the cusor forward the start of N's word.*
+		  *move the cusor forward the start of N's word.*
 		
     * (N)b
 
-		*move backword to the start of the previous Ｎ'S word.*
+		  *move backword to the start of the previous Ｎ'S word.*
 		
     * (N)e
 
-		*move to the next end of N's word*
+		  *move to the next end of N's word*
 		
     * (N)ge
 
-		*move to the previous end of N's word*
+		  *move to the previous end of N's word*
 		
     **Note:**
 		> A word ends at a non-word character, such as a ".", "_" or  ")", use:
@@ -213,7 +213,86 @@
 
 		
 ## 2. PEP 333 WSGI
-* 
+* 总述
+  
+  *指定web服务器与web应用程序或框架之间的接口标准,使得web应用在不同的服务器有较好的移植性*
+
+* 应用程序或框架
+
+  *`Application`对象是一个接受两个参数的可调用对象,这个对象可以是任何包含`__call__`方法的方法,函数,类或者类的实例*
+
+  * environ
+    
+    *这个参数必须是字典对象,它必须是python内置的字典对象,app可以任意的修改这个字典对象,这个字典包含CGI风格的环境变量和WSGI请求变量,有时也要包含服务器的扩展变量*
+  
+    * CGI-style
+
+      * REQUEST_METHOD
+      * SCRIPT_NAME
+      * PATH_INFO
+      * QUERY_STRING
+      * CONTENT_TYPE
+      * CONTENT_LENGHT
+      * SERVER_NAME, SERVER_PORT
+      * SERVER_PROTOCOL
+
+        *HTTP/1.1 或HTTP/1.0* 
+
+      * HTTP_Variables
+  
+        *以HTTP_开头的变量,这些变量与HTTP请求头相对应*
+
+    * WSGI请求变量
+  
+      * wsgi.version
+
+        *(1, 0)代表WSGI version 1.0.*
+
+      * wsgi.url_schema
+    
+        *http, https*
+
+      * wsgi.input
+
+        *一个从HTTP请求体中读取的类似文件类型的输入流*
+
+      * wsgi.error
+
+        *一个可以写入类似文件对象的输出流,用来记录程序或其它错误,可以是服务器的主错误日志,或者是sys.stderr*
+
+      * wsgi.multithread
+
+        *如果应用程序对象被统一进程的其它线程调用,设为true,否则设为false*
+
+      * wsgi.multiprocess
+
+        * 如果程序对象被另外的进程调用,值设为true,否则为false.*
+
+      * wsgi.run_once
+
+        *如果服务器或网关希望在包含应用程序进程的生命周期内只被调用一次,值设为true,否则设为false*
+
+    * environ 还可能包含服务器定义变量,并且命名需要以服务器或网关唯一名称作为前缀*
+
+  * start_response
+
+    ``` python
+      start_response(status, response_headers, exc_info=None)
+    ```
+
+    * status
+    
+      *HTTP string, '200 OK'*
+
+    * response_headers
+    
+      * 它的参数是`header_name`,`header_value`元组的列表
+      * `header_value`不能包含任何控制字符,例如回车与换行符
+      * 服务器或网关负责确保正确的头部发送给客户端,如果应用程序没有设置,服务器或网关需要添加.
+      * 
+
+
+
 
 ## 3. Gevent
 * 总述
