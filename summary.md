@@ -1,5 +1,35 @@
 # ==Summary==
 
+## 总览
+1. gvim 基本使用: https://coolshell.cn/articles/5426.html
+2. Learning Python 5th Edition revise0818: （PARTI，PARTII）
+3. python web service gateway interfacehttps: http//www.python.org/dev/peps/pep-0333/: (wsgi)
+4. gevent.wsgi: http://www.gevent.org/gevent.pywsgi.html
+5. gevent: http://sdiehl.github.io/gevent-tutorial/ (gevent)
+6. Falcon: http://falcon.readthedocs.io/en/0.3.0.1/user/index.html (falcon)
+
+  * 搭建小型服务
+
+7. pip: https://pip.pypa.io/en/stable/ (pip)
+8. virtualenv: https://virtualenv.pypa.io/en/stable/ (virtualenv)
+
+  * 在虚里环境登录
+
+9. json schema: https://spacetelescope.github.io/understanding-json-schema/ (json schema)
+
+10. jwt https://jwt.io/introduction/ (jwt)
+  
+  * 加上schemajwt 登录
+
+11. mongodb: https://docs.mongodb.com/getting-started/shell/introduction/ (mongodb)
+12. pymongodb https://api.mongodb.com/python/current/index.html (pymongo)
+ 
+  * 从mongo获取数据　登录注册
+
+13. pep-8: https://www.python.org/dev/peps/pep-0008/ (StyleGuide for Python Code)
+14. unittest: https://docs.python.org/2/library/unittest.html (unit test)
+15. mock: https://docs.python.org/3/library/unittest.mock.html (mock)
+
 ## 1. vim 
 ### Build Development Environment
 * theme
@@ -228,12 +258,33 @@
     * CGI-style
 
       * REQUEST_METHOD
+
+        *请求的方法,`GET, POST`*
+
       * SCRIPT_NAME
+
+        *URL路径的起始部分*
+
       * PATH_INFO
+
+        *URL路径除了起始部分后的剩余部分*
+
       * QUERY_STRING
+
+        *查询字符串,在`?`之后*
+
       * CONTENT_TYPE
+
+        *HTTP 请求`Content-Type`字段内容*
+
       * CONTENT_LENGHT
+
+        *HTTP 请求`Content-Length`字段内容*
+
       * SERVER_NAME, SERVER_PORT
+
+        *与上面的`SCRIPT_NAME`,`PATH_INFO`组成Url.如果`HTTP_HOST`存在,有限考虑`HTTP_HOST`*
+
       * SERVER_PROTOCOL
 
         *HTTP/1.1 或HTTP/1.0* 
@@ -289,12 +340,40 @@
       * 它的参数是`header_name`,`header_value`元组的列表
       * `header_value`不能包含任何控制字符,例如回车与换行符
       * 服务器或网关负责确保正确的头部发送给客户端,如果应用程序没有设置,服务器或网关需要添加.
-      * 
+      * `Application`与`middleware`禁止使用`HTTP 1.1`中的`hop-by-hop`功能或首部,或者`http 1.0`中有等价的功能或首部. 
+      
+      *start_reponse 可调用对象不能直接发送相应首部,它们被存在服务器或网关,直到有实体body,或者迭代完成才被发送.这种延迟传送是为了确保缓存或者异步程序可以用错误信息替换掉原本输出.*
 
+    * exc_info
+
+      *如果提供次参数,必须是`sys.exc_info()元组`,当`response_headers`被一个错误的`handler`调用的时候,如果没有HTTP headers输出,则用exc_info替换掉储存的HTTP response headers,当错误产生允许应用程序做些调整.*
+
+      *如果,`HTTP headers`已经被发送了,此时提供exc_info,就会抛出错误:*
+
+      ``` python
+        raise exc_info[0], exc_info[1], exc_info[2]
+      ```
+      *如果, `exc_info` 被提供了,而不带`exc_info`去调用`start_response`是一个致命错误.*
+
+* 服务器或网关
+
+  * 每当有来自HTTP客户端的请求的时候,服务器或网关就会调用应用程序
+  * 服务器必须将可迭代对象内容传递给客户端
+  * 服务端/网关 部分处理没有被添加的`environ`,或者做相关的替换
+  * 异常处理,服务器日志记录
+
+* 中间件
+
+  * 功能
+    * 通过重写`environ`,可根据请求的 url 传递到不同的应用程序
+    * 允许多个应用程序在同一进程中运行
+    * 通过网络传递请求和响应,实现负载均衡和远程处理
+    * 对内容进行加工,比如附加 xsl 样式表
 
 
 
 ## 3. Gevent
+
 * 总述
 
 	*gevent 是一个基于[libev](http://software.schmorp.de/pkg/libev.html)的并发库*
@@ -311,7 +390,7 @@
 	
   * 确定性
 	
-  *gevent是确定性的，给定greenlet和相同的一组输入相同的配置，他们总是产生相同的输出。*
+    *gevent是确定性的，给定greenlet和相同的一组输入相同的配置，他们总是产生相同的输出。*
 	
   * Spawning Greenlets
 	    
@@ -343,7 +422,7 @@
 
 		* exception
 		  
-      *exception, uncaught exception instance thrown inside the greenlet
+      *exception, uncaught exception instance thrown inside the greenlet*
 	
   * Program Shutdown
     
